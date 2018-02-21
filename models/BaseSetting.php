@@ -12,7 +12,7 @@ use yii\helpers\Json;
 use yii\db\Expression;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\behaviors\TimestampBehavior;
 
 /**
@@ -118,11 +118,11 @@ class BaseSetting extends ActiveRecord implements SettingInterface
             $model->type = $type;
         } else {
             $t = gettype($value);
-            if ($t == 'string') {
+            if ($t == 'string' && !empty($value)) {
                 $error = false;
                 try {
                     Json::decode($value);
-                } catch (InvalidParamException $e) {
+                } catch (InvalidArgumentException $e) {
                     $error = true;
                 }
                 if (!$error) {
